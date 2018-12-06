@@ -1,0 +1,55 @@
+Views -
+
+1. Login
+	- LoginHeader
+	- LoginForm
+	- LoginFooter
+
+2. Master
+	- AppHeader
+	- Breadcrumb
+	- MasterList
+	- AppFooter
+
+3. MasterIndex
+	- AppHeader
+		- Navbar
+			- Appdrawer Toggle Icon
+			- App Logo with Link
+			- New Action button
+				- New Outward Bill
+				- New Inward Bill
+				- Make Payment
+			- Quick Links
+				- Notifications
+				- Settings
+			- Login / Logout Link
+		- App Drawer
+	- Breadcrumb
+	- Datagrid
+		- GridHeader
+			- Create New Button
+			- Searchbar
+			- Refresh Grid Button
+			- Export Excel / PDF Button
+		- GridData
+			- DataHeaderRow with Sort links
+			- DataFilterRow with individual column filters
+			- DataRow
+				- CheckboxColumn
+				- SerialColumn
+				- ActionColumn
+					- View
+					- Edit
+					- Delete
+		- GridFooter
+			- Selected Actions
+				- Delete
+				- Export
+			- Pagination
+			- Shortcuts and extra notes
+	- AppFooter
+		- Copyright
+		- Useful Links
+		- Social Media Links
+		- Disclaimer
