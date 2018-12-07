@@ -1,9 +1,9 @@
 <template>
-  <div class="dashboard">
-    <h1 class="subheading grey--text">Dashboard</h1>
+  <div class="billing">
+    <h1 class="subheading grey--text">Billing</h1>
 
     <v-container class="my-5">  
-      Home Content
+      Billing Content
     </v-container>
   </div>
 </template>
