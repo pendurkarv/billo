@@ -116,7 +116,14 @@ export default {
           title: 'Logout',
           click: (e) => {
             console.log(e);
-            window.getApp.$emit('APP_LOGOUT');
+            const snackbar = {
+              show: true,
+              color: 'green',
+              text: 'Logout successfully'
+            }
+            this.$store.dispatch('logout');
+            // this.$store.commit('showSnackbar', snackbar);
+            // window.getApp.$emit('APP_LOGOUT');
           },
         },
       ]

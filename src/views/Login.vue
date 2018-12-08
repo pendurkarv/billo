@@ -44,8 +44,10 @@ export default {
   data: () => ({
     loading: false,
     model: {
-      username: 'admin@isockde.com',
-      password: 'password'
+      // username: 'admin@isockde.com',
+      // password: 'password'
+      username: '',
+      password: ''
     }
   }),
 

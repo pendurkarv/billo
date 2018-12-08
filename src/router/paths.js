@@ -64,6 +64,7 @@ export default [
   { path: '/payments', name: 'payments', component: () => import(/* webpackChunkName: "payments" */ '@/views/PaymentsPage.vue') },
   { path: '/reports', name: 'reports', component: () => import(/* webpackChunkName: "reports" */ '@/views/ReportsPage.vue') },
   { path: '/masters', name: 'masters', component: () => import(/* webpackChunkName: "masters" */ '@/views/MastersPage.vue') },
+  { path: '/masters/unit', name: 'Unit', component: () => import(/* webpackChunkName: "masters-unit" */ '@/views/UnitMasterPage.vue') },
   { path: '/utilities', name: 'utilities', component: () => import(/* webpackChunkName: "utilities" */ '@/views/UtilitiesPage.vue') },
   { path: '/admin', name: 'admin', component: () => import(/* webpackChunkName: "admin" */ '@/views/AdminPage.vue') },
 ];

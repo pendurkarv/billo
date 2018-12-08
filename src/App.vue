@@ -8,6 +8,7 @@
           <transition name="fade" mode="out-in">
             <router-view></router-view>
           </transition>
+          <!-- <button @click="checkApi">Click Me</button> -->
         </v-content>
         <app-footer />
       </v-app>
@@ -51,12 +52,26 @@ export default {
   data: () => ({
     expanded: true,
     rightDrawer: false,
-    snackbar: {
-      show: false,
-      text: '',
-      color: '',
-    }
+    // snackbar: {
+    //   show: false,
+    //   text: '',
+    //   color: '',
+    // }
   }),
+  computed: {
+    snackbar() {
+      // return this.$store.getters.loadedSnackbar;
+      return this.$store.state.snackbar;
+    }
+  },
+  methods: {
+    checkApi() {
+      this.$http.get('http://localhost:5000/api/posts?page=1')
+        .then(res => {
+          console.log(res);
+        })
+    }
+  },
   created () {
     AppEvents.forEach(item => {
       this.$on(item.name, item.callback);
