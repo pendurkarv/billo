@@ -27,8 +27,11 @@ const Menu = [
     route: '/masters',
     items: [
       { icon: 'unit', title: 'Unit', name: 'unit', route: '/masters/unit' },
-      { icon: 'supplier', title: 'Supplier', name: 'supplier', route: '/masters/supplier' },
-    ]
+      { icon: 'state', title: 'State', name: 'state', route: '/masters/state' },
+      { icon: 'bill', title: 'Bill Type', name: 'bill-type', route: '/masters/bill-type' },
+      { icon: 'bill', title: 'Agent', name: 'agent', route: '/masters/agent' },
+      { icon: 'bill', title: 'Customer', name: 'customer', route: '/masters/customer' },
+    ],
   },
   { divider: true },
   { icon: 'build', title: 'Utilities', name: 'utilities', route: '/utilities' },
