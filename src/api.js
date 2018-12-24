@@ -1,22 +1,37 @@
-import db from '@/fb';
+import axios from 'axios';
 
-export const fetchMasterList = master => db.collection(master).orderBy('name').get().then((snapshot) => {
-  const list = [];
-  snapshot.docs.forEach((doc) => {
-    list.push({
-      ...doc.data(),
-      id: doc.id,
-    });
-  });
-  return list;
-});
+axios.defaults.baseURL = 'http://localhost/billing-app/web/api/';
 
-export const updateDocument = (collection, id, data) => db.collection(collection).doc(id).update(data);
-export const addDocument = (collection, data) => db.collection(collection).add(data);
-export const deleteDocument = (collection, id) => db.collection(collection).doc(id).delete();
+axios.interceptors.response.use(
+  response => response,
+  (error) => {
+    // handle error
+    if (error.response) {
+      alert(error.response.data.message);
+    }
+  },
+);
 
-export default {
-  fetchMasterList,
-  addDocument,
-  updateDocument,
-};
+export const fetchMasterList = (master, q = '', page = 1, perPage = 10, sortBy = 'name', descending = false) => axios.get(master, {
+  params: { q, page, 'per-page': perPage, 'sort-by': sortBy, descending },
+}).then((res) => {
+  return {
+    data: res.data,
+    curPage: parseInt(res.headers['x-pagination-current-page']),
+    pageCount: parseInt(res.headers['x-pagination-page-count']),
+    perPage: parseInt(res.headers['x-pagination-per-page']),
+    totalCount: parseInt(res.headers['x-pagination-total-count']),
+  };
+}).catch(err => console.log(err));
+
+export const addMasterItem = (master, data) => axios.post(master, data);
+export const updateMasterItem = (master, id, data) => axios.patch(`${master}/${id}`, data);
+export const deleteMasterItem = (master, id) => axios.delete(`${master}/${id}`);
+
+
+// export default {
+//   fetchMasterList,
+//   addMaster,
+//   // addDocument,
+//   // updateDocument,
+// };

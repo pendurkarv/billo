@@ -40,6 +40,8 @@
     <v-data-table
       :headers="headers"
       :items="items"
+      :pagination.sync="pagination"
+      :total-items="totalItems"
       :search="search"
       :loading="loading"
       class="elevation-1"
@@ -48,23 +50,12 @@
         <td>{{ props.item.code }}</td>
         <td>{{ props.item.name }}</td>
         <td class="justify-center layout px-0">
-          <v-icon
-            small
-            class="mr-2"
-            @click="editItem(props.item)"
-          >
-            edit
-          </v-icon>
-          <v-icon
-            small
-            @click="deleteItem(props.item)"
-          >
-            delete
-          </v-icon>
+          <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
+          <v-icon small @click="deleteItem(props.item)">delete</v-icon>
         </td>
       </template>
       <template slot="no-data">
-        <v-btn color="primary" @click="initialize">Reset</v-btn>
+        <v-btn color="primary" @click="getDataFromApi">Reset</v-btn>
       </template>
     </v-data-table>
   </div>
@@ -72,35 +63,38 @@
 
 <script>
 import db from '@/fb';
+import { fetchMasterList } from '@/api';
 
   export default {
-    data: () => ({
-      dialog: false,
-      headers: [
-        {
-          text: 'Code',
-          align: 'left',
-          sortable: false,
-          value: 'code'
+    data() {
+      return {
+        totalItems: 0,
+        items: [],
+        dialog: false,
+        pagination: {},
+        headers: [
+          {
+            text: 'Code',
+            align: 'left',
+            sortable: false,
+            value: 'code'
+          },
+          { text: 'Name', value: 'name' },
+          { text: 'Actions', value: 'name', align: 'center', sortable: false }
+        ],
+        search: '',
+        loading: false,
+        editedIndex: -1,
+        editedItem: {
+          code: '',
+          name: '',
         },
-        { text: 'Name', value: 'name' },
-        { text: 'Actions', value: 'name', align: 'center', sortable: false }
-      ],
-      //pagination: {},
-      items: [],
-      //totalItems: 0,
-      search: '',
-      loading: false,
-      editedIndex: -1,
-      editedItem: {
-        code: '',
-        name: '',
-      },
-      defaultItem: {
-        code: '',
-        name: '',
+        defaultItem: {
+          code: '',
+          name: '',
+        }
       }
-    }),
+    },
 
     computed: {
       formTitle () {
@@ -111,27 +105,43 @@ import db from '@/fb';
     watch: {
       dialog (val) {
         val || this.close()
+      },
+      pagination: {
+        handler () {
+          this.getDataFromApi();
+        },
+        deep: true
       }
     },
 
-    created () {
-      this.initialize();
+    mounted() {
+      // this.getDataFromApi()
     },
 
     methods: {
-      initialize () {
-        this.loading = true;
-        db.collection('states').orderBy('name').get().then(snapshot => {
-          this.items = [];      
-          snapshot.docs.forEach(doc => {
-            this.items.push({
-              ...doc.data(),
-              id: doc.id
-            })
-            this.loading = false;
-          })
-        })
+      getDataFromApi() {
+        this.loading = true
+        const { sortBy, descending, page, rowsPerPage } = this.pagination;
+        return fetchMasterList('states', this.search, page, rowsPerPage, sortBy, descending ).then(response => {
+          this.loading = false;
+          this.items = response.data;
+          this.totalItems = response.totalCount;
+        });
       },
+
+      // initialize () {
+      //   this.loading = true;
+      //   db.collection('states').orderBy('name').get().then(snapshot => {
+      //     this.items = [];      
+      //     snapshot.docs.forEach(doc => {
+      //       this.items.push({
+      //         ...doc.data(),
+      //         id: doc.id
+      //       })
+      //       this.loading = false;
+      //     })
+      //   })
+      // },
 
       editItem (item) {
         this.editedIndex = this.items.indexOf(item)

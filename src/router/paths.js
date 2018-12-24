@@ -72,4 +72,5 @@ export default [
   { path: '/masters/customer', name: 'customer', component: () => import(/* webpackChunkName: "masters-customer" */ '@/views/CustomerMasterPage.vue') },
   { path: '/utilities', name: 'utilities', component: () => import(/* webpackChunkName: "utilities" */ '@/views/UtilitiesPage.vue') },
   { path: '/admin', name: 'admin', component: () => import(/* webpackChunkName: "admin" */ '@/views/AdminPage.vue') },
+  { path: '/table', name: 'table', component: () => import(/* webpackChunkName: "table" */ '@/views/Table.vue') },
 ];

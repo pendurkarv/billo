@@ -11,7 +11,7 @@
         hide-details
       ></v-text-field>
       <v-dialog v-model="dialog" persistent max-width="800px">
-        <v-btn slot="activator" color="primary" dark class="mb-2">New Item</v-btn>
+        <v-btn slot="activator" color="primary" dark class="mb-2">New Customer</v-btn>
         <form>
           <v-card>
             <v-card-title>
@@ -59,7 +59,10 @@
                     >
                       <v-divider slot="append-item" class="mt-2" ></v-divider>                    
                       <v-list-tile slot="append-item" ripple @click="openAddAgentDialog" >
-                        <v-list-tile-title>Select All</v-list-tile-title>
+                        <v-list-tile-title>Add Agent</v-list-tile-title>
+                        <v-dialog v-if="dialog == 'agent'" v-model="dialog" persistent max-width="800px">
+                          <agent-form title="Agent Form" />
+                        </v-dialog>
                       </v-list-tile>
                     </v-autocomplete>                    
                     
@@ -186,16 +189,21 @@
 </template>
 
 <script>
+import AgentForm from '@/components/AgentForm';
 import { fetchMasterList, addDocument, updateDocument, deleteDocument } from '@/api';
 import DialogMixin from '@/mixins/DialogMixin';
 
 export default {
-   $_veeValidate: {
+    components: {
+      AgentForm
+    },
+    $_veeValidate: {
       validator: 'new'
     },
     mixins: [DialogMixin],
     data: () => ({
       dialog: false,
+      
       headers: [
         {
           text: 'Code',
@@ -426,7 +434,7 @@ export default {
         }).catch(err => console.log());
       },
       openAddAgentDialog() {
-        alert('asdsad');
+        this.dialog = 'agent';
       }
     }
   }
