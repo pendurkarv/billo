@@ -42,24 +42,21 @@
 <script>
 export default {
   data: () => ({
-    loading: false,
     model: {
-      // username: 'admin@isockde.com',
-      // password: 'password'
       username: '',
       password: ''
     }
   }),
-
+  computed: {
+    loading() {
+      return this.$store.getters.isLoading;
+    }
+  },
   methods: {
     login () {
-      this.loading = true;
-      setTimeout(() => {
-        this.$router.push('/');
-      }, 1000);
+      this.$store.dispatch('login', this.model);
     }
   }
-
 };
 </script>
 <style scoped lang="css">

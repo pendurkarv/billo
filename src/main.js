@@ -6,16 +6,18 @@ import './plugins/vuetify';
 import App from './App.vue';
 import router from './router';
 import store from './store';
+import Auth from './auth/Auth';
 
 Vue.config.productionTip = false;
 // Vue.use(Vuelidate);
 Vue.use(VeeValidate);
+Vue.use(Auth);
 
 // Vue.prototype.$http = Axios;
-const token = localStorage.getItem('token');
-if (token) {
-  Vue.prototype.$http.defaults.headers.common['Authorization'] = token;
-}
+// const token = localStorage.getItem('token');
+// if (token) {
+//   Vue.prototype.$http.defaults.headers.common['Authorization'] = token;
+// }
 
 new Vue({
   router,

@@ -1,8 +1,8 @@
 import Vue from 'vue';
+import NProgress from 'nprogress';
 import Router from 'vue-router';
 import store from '../store';
 
-import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 
 import paths from './paths';
@@ -18,8 +18,11 @@ const router = new Router({
 // router gards
 router.beforeEach((to, from, next) => {
   NProgress.start();
-  if (to.meta.public === false && store.user.isGuest === true) {
+
+  if (store.getters.isGuest && to.path !== '/login') {
     next('/login');
+  } else if (!store.getters.isGuest && to.path === '/login') {
+    next('/');
   }
   next();
 });
