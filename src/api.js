@@ -15,20 +15,27 @@ axios.interceptors.request.use(
 );
 
 axios.interceptors.response.use(
-  response => response,
+  // response => response,
+  undefined,
   (error) => {
-    // handle error
-    console.log(error);
+    console.log(error.response);
     let text = 'Network error occured';
+    let errData = error.response;
     if (error.response) {
-      let text = error.response.data.message;
-
+      text = error.response.data.message;
       if (error.response.status === 404) {
         text = `${error.response.status} - Requested resource not found`;
       } else if (error.response.status === 401) {
         text = 'Invalid username or password';
+      } else if (error.response.status === 422) {
+        text = 'Data validation failed';
+        errData = {
+          status: error.response.status,
+          statusText: error.response.statusText,
+          data: error.response.data,
+        };
       }
-    } 
+    }
 
     const snackbar = {
       text,
@@ -36,7 +43,8 @@ axios.interceptors.response.use(
       color: 'error',
     };
     store.commit('showSnackbar', snackbar);
-    // return error;
+
+    return Promise.reject(errData);
   },
 );
 

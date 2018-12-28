@@ -1,10 +1,11 @@
 <template>
-  <state-form title="Edit" :state="state" @submit="submit" @cancel="cancel" />
+  <state-form title="Edit" :state="state" :fromErrors="formErrors" :disabledFields="disabledFields" @submit="submit" @cancel="cancel" />
 </template>
 
 <script>
 import { fetchMasterItem, updateMasterItem } from '@/api';
 import StateForm from '@/components/state/StateForm';
+import { formatValidationErrors } from '@/util/api';
 
 export default {
   name: 'edit-state-form',
@@ -18,7 +19,9 @@ export default {
         code: '',
         gst_code: '',
         name: '',
-      }
+      },
+      disabledFields: ['code', 'gst_code'],
+      formErrors: {}
     }
   },
   mounted() {
@@ -30,7 +33,7 @@ export default {
       return fetchMasterItem('states', id).then(state => {
         this.state = state.data;
       }).catch(err => {
-        // console.log(err);
+        this.formErrors = formatValidationErrors(err);
       });
     },
     submit() {
