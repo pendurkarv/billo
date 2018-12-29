@@ -3,12 +3,14 @@
       <v-toolbar-title>{{ title }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-text-field
+        ref="search"
         v-model="search"
         @input="searchTable"
         append-icon="search"
         label="Search"
         single-line
         hide-details
+        autofocus
       ></v-text-field>
       <v-btn color="primary" dark class="mb-2" @click="create">Add Item</v-btn>
       <v-flex xs12 sm3>
@@ -20,6 +22,8 @@
 </template>
 
 <script>
+import { bus } from '@/main';
+
 export default {
   name: 'master-data-table-toolbar',
   props: ['title'],
@@ -28,6 +32,12 @@ export default {
       search: '',
     }
   },
+  mounted() {
+    bus.$on('SET_FOCUS_ON_SEARCH', () => {
+      console.log(this.$refs.search.$el);
+      this.$refs.search.focus();
+    });    
+  },  
   methods: {
     searchTable() {
       this.$emit('search', this.search);

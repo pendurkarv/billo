@@ -1,22 +1,21 @@
 <template>
-  <state-form title="Add" :state="state" :formErrors="formErrors" @submit="submit" @cancel="cancel" />
+  <bank-form title="Add" :bank="bank" :formErrors="formErrors" @submit="submit" @cancel="cancel" />
 </template>
 
 <script>
 import { addMasterItem } from '@/api';
-import StateForm from '@/components/state/Form';
+import BankForm from '@/components/bank/Form';
 import { formatValidationErrors } from '@/util/api';
 
 export default {
-  name: 'create-state-form',
+  name: 'create-bank-form',
   components: {
-    StateForm
+    BankForm
   },
   data() {
     return {
-      state: {
+      bank: {
         code: '',
-        gst_code: '',
         name: '',
       },
       formErrors: {}
@@ -24,8 +23,8 @@ export default {
   },
   methods: {
     submit() {
-      addMasterItem('states', this.state).then((data) => {
-        this.$emit('create', { name: this.state.name });
+      addMasterItem('banks', this.bank).then((data) => {
+        this.$emit('create', { name: this.bank.name });
       }).catch(err => {
         this.formErrors = formatValidationErrors(err);
       });

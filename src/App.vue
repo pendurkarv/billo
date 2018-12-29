@@ -52,15 +52,9 @@ export default {
   data: () => ({
     expanded: true,
     rightDrawer: false,
-    // snackbar: {
-    //   show: false,
-    //   text: '',
-    //   color: '',
-    // }
   }),
   computed: {
     snackbar() {
-      // return this.$store.getters.loadedSnackbar;
       return this.$store.state.snackbar;
     }
   },

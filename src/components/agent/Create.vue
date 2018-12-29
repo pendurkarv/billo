@@ -1,31 +1,31 @@
 <template>
-  <state-form title="Add" :state="state" :formErrors="formErrors" @submit="submit" @cancel="cancel" />
+  <agent-form title="Add" :agent="agent" :formErrors="formErrors" @submit="submit" @cancel="cancel" />
 </template>
 
 <script>
 import { addMasterItem } from '@/api';
-import StateForm from '@/components/state/Form';
+import AgentForm from '@/components/agent/Form';
 import { formatValidationErrors } from '@/util/api';
 
 export default {
-  name: 'create-state-form',
+  name: 'create-agent-form',
   components: {
-    StateForm
+    AgentForm
   },
   data() {
     return {
-      state: {
+      agent: {
         code: '',
-        gst_code: '',
         name: '',
+        commission: '',
       },
       formErrors: {}
     }
   },
   methods: {
     submit() {
-      addMasterItem('states', this.state).then((data) => {
-        this.$emit('create', { name: this.state.name });
+      addMasterItem('agents', this.agent).then((data) => {
+        this.$emit('create', { name: this.agent.name });
       }).catch(err => {
         this.formErrors = formatValidationErrors(err);
       });

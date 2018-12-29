@@ -1,6 +1,4 @@
 import Vue from 'vue';
-// import Axios from 'axios';
-// import Vuelidate from 'vuelidate';
 import VeeValidate from 'vee-validate';
 import './plugins/vuetify';
 import App from './App.vue';
@@ -9,18 +7,16 @@ import store from './store';
 import Auth from './auth/Auth';
 
 Vue.config.productionTip = false;
-// Vue.use(Vuelidate);
 Vue.use(VeeValidate);
 Vue.use(Auth);
 
-// Vue.prototype.$http = Axios;
-// const token = localStorage.getItem('token');
-// if (token) {
-//   Vue.prototype.$http.defaults.headers.common['Authorization'] = token;
-// }
+export const bus = new Vue();
 
-new Vue({
+const app = new Vue({
   router,
   store,
   render: h => h(App),
 }).$mount('#app');
+
+
+// console.log(app.$store.state);

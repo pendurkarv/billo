@@ -1,10 +1,10 @@
 <template>
-  <state-form title="Edit" :state="state" :fromErrors="formErrors" :disabledFields="disabledFields" @submit="submit" @cancel="cancel" />
+  <state-form title="Edit" autofocus="name" :state="state" :fromErrors="formErrors" :disabledFields="disabledFields" @submit="submit" @cancel="cancel" />
 </template>
 
 <script>
 import { fetchMasterItem, updateMasterItem } from '@/api';
-import StateForm from '@/components/state/StateForm';
+import StateForm from '@/components/state/Form';
 import { formatValidationErrors } from '@/util/api';
 
 export default {

@@ -1,31 +1,31 @@
 <template>
-  <state-form title="Add" :state="state" :formErrors="formErrors" @submit="submit" @cancel="cancel" />
+  <hsn-form title="Add" :hsn="hsn" :formErrors="formErrors" @submit="submit" @cancel="cancel" />
 </template>
 
 <script>
 import { addMasterItem } from '@/api';
-import StateForm from '@/components/state/Form';
+import HsnForm from '@/components/hsn/Form';
 import { formatValidationErrors } from '@/util/api';
 
 export default {
-  name: 'create-state-form',
+  name: 'create-hsn-form',
   components: {
-    StateForm
+    HsnForm
   },
   data() {
     return {
-      state: {
+      hsn: {
         code: '',
-        gst_code: '',
         name: '',
+        tax_percentage: '',
       },
       formErrors: {}
     }
   },
   methods: {
     submit() {
-      addMasterItem('states', this.state).then((data) => {
-        this.$emit('create', { name: this.state.name });
+      addMasterItem('hsns', this.hsn).then((data) => {
+        this.$emit('create', { name: this.hsn.name });
       }).catch(err => {
         this.formErrors = formatValidationErrors(err);
       });

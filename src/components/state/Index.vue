@@ -1,5 +1,5 @@
 <template>
-    <div @keydown.esc="console.log('asasd')">
+    <div>
       <master-data-table-toolbar title="States" @search="setSearch" @create="openDialog('create')" @refresh="getItems" />
       <v-data-table
         :headers="headers"

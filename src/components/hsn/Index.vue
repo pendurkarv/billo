@@ -1,6 +1,6 @@
 <template>
-    <div @keydown.esc="console.log('asasd')">
-      <master-data-table-toolbar title="States" @search="setSearch" @create="openDialog('create')" @refresh="getItems" />
+    <div>
+      <master-data-table-toolbar title="HSN List" @search="setSearch" @create="openDialog('create')" @refresh="getItems" />
       <v-data-table
         :headers="headers"
         :items="items"
@@ -11,12 +11,11 @@
       >
         <template slot="items" slot-scope="props">
             <td class="text-uppercase">{{ props.item.code }}</td>
-            <td>{{ props.item.gst_code }}</td>
             <td class="text-capitalize">{{ props.item.name }}</td>
+            <td>{{ props.item.tax_percentage }}</td>
             <td class="justify-center layout px-0">
               <v-icon small class="mr-2" @click="openDialog('edit', props.item)">edit</v-icon>
               <v-icon small @click="openDeleteDialog(props.item)">delete</v-icon>
-              <!-- <v-icon small @click="onItemDelete(props.item)">delete</v-icon> -->
             </td>
         </template>
         <template slot="no-data">
@@ -25,8 +24,8 @@
       </v-data-table>
 
       <v-dialog v-model="dialog" max-width="300px" lazy persistent>
-        <create-state-form v-if="dialogComponent === 'create'" @create="postItemCreate" @cancel="close" />
-        <edit-state-form v-else-if="dialogComponent === 'edit'" :id="editedId" @update="postItemUpdate" @cancel="close" />
+        <create-hsn-form v-if="dialogComponent === 'create'" @create="postItemCreate" @cancel="close" />
+        <edit-hsn-form v-else-if="dialogComponent === 'edit'" :id="editedId" @update="postItemUpdate" @cancel="close" />
       </v-dialog>
 
       <delete-alert :dialog="deleteDialog" :item="deleteItem" @yes="onItemDelete" @no="deleteDialog = false" />
@@ -47,17 +46,17 @@
 import GlobalEvents from 'vue-global-events';
 import { fetchMasterList, deleteMasterItem } from '@/api';
 import MasterDataTableToolbar from '@/components/MasterDataTableToolbar';
-import CreateStateForm from '@/components/state/Create';
-import EditStateForm from '@/components/state/Edit';
+import CreateHsnForm from '@/components/hsn/Create';
+import EditHsnForm from '@/components/hsn/Edit';
 import DeleteAlert from '@/components/DeleteAlert';
 import { bus } from '@/main';
 
 export default {
-  name: 'state-master',
+  name: 'hsn-master',
   components: {
     MasterDataTableToolbar,
-    CreateStateForm,
-    EditStateForm,
+    CreateHsnForm,
+    EditHsnForm,
     DeleteAlert,
     GlobalEvents
   },
@@ -75,8 +74,8 @@ export default {
           sortable: false,
           value: 'code'
         },
-        { text: 'GST Code', value: 'gst_code' },
         { text: 'Name', value: 'name' },
+        { text: 'Tax Percentage', value: 'tax_percentage' },
         { text: 'Actions', value: 'name', align: 'center', sortable: false }
       ],
       dialog: false,
@@ -98,7 +97,7 @@ export default {
   },
   computed: {
     formTitle () {
-      return this.editedIndex === -1 ? 'New State' : 'Edit State'
+      return this.editedIndex === -1 ? 'New HSN' : 'Edit HSN'
     },
     editedId() {
       if(this.editedIndex > -1 ) {
@@ -164,7 +163,7 @@ export default {
       this.loading = true;
       const { sortBy, descending, page, rowsPerPage } = this.pagination;
 
-      return fetchMasterList('states', this.search, page, rowsPerPage, sortBy, descending ).then(response => {
+      return fetchMasterList('hsns', this.search, page, rowsPerPage, sortBy, descending ).then(response => {
         this.items = response.data;
         this.totalItems = response.totalCount;
         this.loading = false;
@@ -175,7 +174,7 @@ export default {
 
     postItemCreate(data) {
       const snackbar = {
-        text: `State "${data.name}" created`,
+        text: `HSN "${data.name}" created`,
         show: true,
         color: 'success'
       };
@@ -187,11 +186,11 @@ export default {
     },
 
     postItemUpdate(data) {
-      Object.assign(this.items[this.editedIndex], data);
+      this.getItems();
       this.loading = false;
 
       const snackbar = {
-        text: `State "${data.name}" updated`,
+        text: `HSN "${data.name}" updated`,
         show: true,
         color: 'success'
       };
@@ -205,9 +204,9 @@ export default {
       const id = this.items[index].id;
 
       this.loading = true;            
-      deleteMasterItem('states', id).then(() => {
+      deleteMasterItem('hsns', id).then(() => {
         const snackbar = {
-          text: `State "${id}" deleted`,
+          text: `HSN "${id}" deleted`,
           show: true,
           color: 'success'
         };
@@ -217,7 +216,7 @@ export default {
         this.$store.commit('showSnackbar', snackbar);
       }).catch((error) => {
         const snackbar = {
-          text: `State "${id}" could not be deleted`,
+          text: `HSN "${id}" could not be deleted`,
           show: true,
           color: 'error'
         };
